@@ -1,5 +1,6 @@
-import Exercicios.Exercicio5;
-import Exercicios.Exercicio6;
+import Ex5.Exercicio5;
+import Ex6.Exercicio6;
+
 import java.util.Scanner;
 
 public class Main {

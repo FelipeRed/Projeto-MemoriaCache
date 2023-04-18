@@ -1,4 +1,4 @@
-package Classes;
+package Ex6.Memoria;
 import java.util.Random;
 
 public class LinhaDeMemoria {

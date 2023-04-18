@@ -1,4 +1,5 @@
-package Classes;
+package Ex5;
+
 import java.util.HashMap;
 
 public class CacheSimples {
@@ -8,8 +9,7 @@ public class CacheSimples {
     private final int tamanho = 5;
     private HashMap<Integer, Integer> cache = new HashMap<>();
 
-    public CacheSimples() {
-        //cria uma memória cache de 5 posições
+    public CacheSimples() { //cria uma memória cache de 5 posições
         hits = 0;
         misses = 0;
         acessosMP = 0;
@@ -47,12 +47,11 @@ public class CacheSimples {
         acessosMP++;
         return "Miss";
     }
-    public void setPosicaoCache(int x) {
-        //regra para determinar em qual posição da cache salvar o valor X
+    public void setPosicaoCache(int x) { //regra para determinar em qual posição da cache salvar o valor X
         int posicaoCache = x % tamanho;
         cache.put(posicaoCache, x);
     }
-    public void printResumo(int linhas_codigo) {
+    public void printResumo(int linhas_codigo) { //irá imprimir o resumo da execução
         float taxaHits = ((float) hits/ (float) linhas_codigo)*100;
         System.out.println("------> RESUMO <------");
         System.out.println("Memórias acessadas: " + acessosMP);

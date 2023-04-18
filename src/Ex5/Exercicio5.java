@@ -1,5 +1,4 @@
-package Exercicios;
-import Classes.CacheSimples;
+package Ex5;
 
 import java.util.Scanner;
 
@@ -9,7 +8,7 @@ public class Exercicio5 {
         int[] exemplo1 = {0, 1, 2, 3, 1, 4, 5, 6};
         int[] exemplo2 = {0, 1, 2, 2, 22 , 32, 42, 20, 1, 10, 11, 12, 13};
         int[] exemplo3 = {1, 6, 1, 11, 1, 16, 1, 21, 1, 26};
-        int escolha = escolherExemplo();
+        int escolha = escolherExemplo(); //pede pro usuário escolher qual exemplo executar
         switch (escolha) {
             case 1:
                 exec(exemplo1);
@@ -26,8 +25,8 @@ public class Exercicio5 {
     public static void mapeamento_direto(int[] posicoes_a_acessar) {
         /*
           1- Irá imprimir a cache em seu estado inicial (vazia)
-          2- Irá procurar cada valor dentro do parâmetro posicoes_a_acessar dentro da cache através
-             do método proprocurarPosicaoCache() (método da classe CacheSimples)
+          2- Irá procurar cada valor de posicoes_a_acessar dentro da cache através do método proprocurarPosicaoCache()
+                                                                                      método da classe Ex5.CacheSimples
           3- A cada vez que esse método é acionado, será incrementado os valores de hits e misses,
              bem como os valores da memória cache serão atualizados
         */
@@ -49,12 +48,12 @@ public class Exercicio5 {
         cache.printResumo(exemplo.length);
     }
     public static int escolherExemplo() {
-        Scanner scanner = new Scanner(System.in);
+        Scanner teclado = new Scanner(System.in);
         System.out.println("""
                 1- [0, 1, 2, 3, 1, 4, 5, 6]
                 2- [0, 1, 2, 2, 22 , 32, 42, 20, 1, 10, 11, 12, 13]
                 3- [1, 6, 1, 11, 1, 16, 1, 21, 1, 26]""");
         System.out.print("Qual sequencia de passos gostaria de realizar: ");
-        return scanner.nextInt();
+        return teclado.nextInt();
     }
 }
