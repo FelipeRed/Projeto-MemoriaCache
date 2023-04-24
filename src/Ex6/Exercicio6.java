@@ -6,27 +6,54 @@ import Ex6.Memoria.MemoriaPrincipal;
 import java.util.Scanner;
 
 public class Exercicio6 {
-    public static void main(String[] args) { //AINDA FALTA ESTRUTURAR O EXERCÍCIO 6
-        MemoriaPrincipal memoriaPrincipal = new MemoriaPrincipal();
+    private static MemoriaPrincipal memoriaPrincipal;
+    private static CacheConjunto cache;
+    public static void main(String[] args) {
         int n_blocos = escolherN_Blocos();
-        int metodo_substituicao = escolherMetodo_Substituicao();
-        CacheConjunto cache = new CacheConjunto(2);
-        cache.addBlocoCache("0000", memoriaPrincipal);
-        cache.addBlocoCache("0110", memoriaPrincipal);
-        memoriaPrincipal.printarMemoria();
-        cache.printarCache();
+        //int metodo_substituicao = escolherMetodo_Substituicao();
+        memoriaPrincipal = new MemoriaPrincipal();
+        cache = new CacheConjunto(n_blocos);
 
-        //exemplos com endereços prontos para testagem
-        //ainda falta fazer um programinha padrão para testagem
-        /*
-            CARREGAR o valor de exemplo1[i]
-            CARREGAR o valor de exemplo1[i]
-            ALTERAR o valor de exemplo1[i] para X
-            CARREGAR o valor de exemplo1[i] para X
+        /* TESTE A SER APLICADO
+            LOAD r0 0001
+            LOAD r2 1001
+              SW r2 0001
+              SW r2 1101
+            LOAD r0 1100
+            LOAD r1 0010
+              SW r0 0011
+            LOAD r2 0001
+            LOAD r3 1010
         */
-        String[] exemplo1 = {"0000", "0001", "0010", "0011", "0001", "0101", "0110", "0111"};
-        String[] exemplo2 = {"0000", "0001", "0010", "0010", "1010" , "1000", "0010", "0001", "0000", "0011", "0100"};
-        String[] exemplo3 = {"0000", "0001", "0010", "1000", "0101" , "0001", "1010", "1000", "0011", "1001", "0010"};
+
+        int r0 = -1;
+        int r1 = -1;
+        int r2 = -1;
+        int r3 = -1;
+
+        limparTela();
+        printarExecucao("ESTADO INICIAL", r0, r1, r2, r3);
+        r0 = cache.load("0001", memoriaPrincipal, 0);
+        printarExecucao("LOAD r0 0001", r0, r1, r2, r3);
+        r2 = cache.load("1001", memoriaPrincipal, 0);
+        printarExecucao("LOAD r2 1001", r0, r1, r2, r3);
+        //sw(r2, "0001");
+        //printarExecucao("SW r2 0001", r0, r1, r2, r3);
+        //sw(r2, "1101");
+        //printarExecucao("SW r2 1101", r0, r1, r2, r3);
+        r0 = cache.load("1100", memoriaPrincipal, 0);
+        printarExecucao("LOAD r0 1100", r0, r1, r2, r3);
+        r1 = cache.load("0010", memoriaPrincipal, 0);
+        printarExecucao("LOAD r1 0010", r0, r1, r2, r3);
+        //sw(r0, "0011");
+        //printarExecucao("SW r0 0011", r0, r1, r2, r3);
+        r2 = cache.load("0001", memoriaPrincipal, 0);
+        printarExecucao("LOAD r2 0001", r0, r1, r2, r3);
+        r3 = cache.load("1010", memoriaPrincipal, 0);
+        printarExecucao("LOAD r3 1010", r0, r1, r2, r3);
+
+        System.out.println("\nHits  : " + cache.getHits());
+        System.out.println("Misses: " + cache.getMisses());
     }
     public static int escolherN_Blocos() { //metódo que ira retornar quantos blocos o usuário quer em cada conjunto
         Scanner teclado = new Scanner(System.in);
@@ -41,7 +68,7 @@ public class Exercicio6 {
                     - 8 blocos
                     - 16 blocos
                     """);
-            System.out.print("Insira quantos blocos você deseja que tenha em cada conjunto: ");
+            System.out.print("Insira o número de blocos você deseja que tenha em cada conjunto: ");
             escolha = teclado.nextInt();
         }
         return escolha;
@@ -49,7 +76,7 @@ public class Exercicio6 {
     public static int escolherMetodo_Substituicao() { //método que irá retornar o tipo de substituição a ser usada
         Scanner teclado = new Scanner(System.in);
         int escolha = 0;
-        while ((escolha != 1) && (escolha != 2) && (escolha != 3)) {
+        while ((escolha < 1) || (escolha > 3)) {
             limparTela();
             System.out.print("""
                 OPÇÕES:
@@ -61,6 +88,17 @@ public class Exercicio6 {
             escolha = teclado.nextInt();
         }
         return escolha; //POR ENQUANTO SÓ ESTÁ IMPLEMENTADA A LÓGICA LRU
+    }
+    public static void printarExecucao(String comando, int r0, int r1, int r2, int r3) {
+        //imprimirá os estado das memórias a cada comando
+        System.out.println("\n\n" + comando);
+        memoriaPrincipal.print();
+        cache.print();
+        System.out.println("VAR  |  VALOR");
+        System.out.println("r0   |  " + r0);
+        System.out.println("r1   |  " + r1);
+        System.out.println("r2   |  " + r2);
+        System.out.println("r3   |  " + r3);
     }
     public static void limparTela() { //método para limpar a tela do terminal
         for (int i = 0; i < 50; i++) {

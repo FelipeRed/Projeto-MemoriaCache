@@ -33,13 +33,13 @@ public class Exercicio5 {
         cache = new CacheSimples();
         System.out.println();
         System.out.println("Cache inicial");
-        cache.imprimirCache();
+        cache.print();
 
         int x = 0;
         for (int p : posicoes_a_acessar) {
             System.out.println("Linha " + x + " | Posição desejada: " + p);
             System.out.println("Status: " + cache.procurarPosicaoCache(p));
-            cache.imprimirCache();
+            cache.print();
             x++;
         }
     }

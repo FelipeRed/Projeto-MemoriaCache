@@ -7,7 +7,8 @@ public class LinhaDeMemoria {
 
     public LinhaDeMemoria(int n_linha) {
         // Lista com as Strings que serão utilizadas como endereço da MemóriaPrincial
-        String[] linhas = {"0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111", "1000", "1001", "1010"};
+        String[] linhas = {"0000", "0001", "0010", "0011", "0100", "0101", "0110", "0111", "1000", "1001", "1010",
+                           "1011", "1100", "1101", "1110", "1111"};
 
         Random rdn = new Random(); // Classe utilizada para capturar um valor rancômico
         this.endereco = linhas[n_linha]; // Atributo endereço receberá o array linhas na posição do parâmetro n_linhas

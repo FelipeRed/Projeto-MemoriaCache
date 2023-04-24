@@ -15,13 +15,14 @@ import java.util.TreeMap;
 
 public class Bloco {
     private TreeMap<String, Integer> bloco;
-    private int dirty_bit = 0; //atributo que irá dizer se foi modificado algum valor dentro do bloco ou não
+    private int dirty_bit; //atributo que irá dizer se foi modificado algum valor dentro do bloco ou não
 
     public Bloco() { //cria um bloco padrão com valores nulos
         //este construtor é usado na hora de criar a memória cache, pois ela inicialmente é vazia
         bloco = new TreeMap<>();
         bloco.put("-", -1);
         bloco.put("- ", -1);
+        dirty_bit = 0;
     }
     public Bloco(String ender_alvo, MemoriaPrincipal mp) {
         /*
@@ -40,34 +41,39 @@ public class Bloco {
                 bloco.put(linha.getEndereco(), linha.getDado());
             }
         }
+        dirty_bit = 0;
     }
     public TreeMap<String, Integer> getBloco() {
         return bloco;
     }
-    public void printBloco() { //função para imprimir o bloco da memória cache
+    public void print() { //função para imprimir o bloco da memória cache
         int i = 0;
-        for (String s : bloco.keySet()) {
+        for (String key : bloco.keySet()) {
             if (i == 0) {
-                if (s.equals("-")) {
-                    System.out.println("    " + dirty_bit + "    |    " + s + "    |  " + bloco.get(s) + "    |");
+                if (key.equals("-")) {
+                    System.out.println("    " + dirty_bit + "    |    " + key + "    |  " + bloco.get(key) + "    |");
                 } else {
-                    System.out.println("    " + dirty_bit + "    |  " + s + "   |  " + bloco.get(s) + "   |");
+                    System.out.println("    " + dirty_bit + "    |  " + key + "   |  " + bloco.get(key) + "   |");
                 }
             } else {
-                if (s.equals("- ")) {
-                    System.out.println("|                 |    " + dirty_bit + "    |    " + s + "   |  " + bloco.get(s) + "    |");
+                if (key.equals("- ")) {
+                    System.out.println("|                 |    " + dirty_bit + "    |    " + key + "   |  " + bloco.get(key) + "    |");
                 } else {
-                    System.out.println("|                 |    " + dirty_bit + "    |  " + s + "   |  " + bloco.get(s) + "   |");
+                    System.out.println("|                 |    " + dirty_bit + "    |  " + key + "   |  " + bloco.get(key) + "   |");
                 }
             }
             i++;
         }
     }
-    public void alterarValor(String endereco, int valor) {
+    public void alterar_Valor_Bloco(String endereco, int valor) {
         bloco.put(endereco, valor);
         dirty_bit = 1;
     }
-    public int isDirty_bit() {
+    public void atualiza_Memoria_Principal(MemoriaPrincipal mp) {
+        //código que irá atualizar os dados na mémória principal caso o bloco seja removido da cache
+        //e seu dirty bit seja = 1
+    }
+    public int getDirty_bit() {
         return dirty_bit;
     }
 }

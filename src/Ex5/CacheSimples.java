@@ -17,7 +17,7 @@ public class CacheSimples {
             cache.put(i, -1);
         }
     }
-    public void imprimirCache() {
+    public void print() {
         //percorerá todas as linhas do HashMap e para cada linha imprimirá a sua chave + o valor atribuído
         System.out.println("Tamanho da cache: " + tamanho);
         System.out.println("-----------");
