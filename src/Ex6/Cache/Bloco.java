@@ -68,7 +68,7 @@ public class Bloco {
     }
     public void alterar_Valor_Bloco(String endereco, int valor) {
         linhas.put(endereco, valor);
-        dirty_bit = 1;
+        this.dirty_bit = 1;
     }
     public void atualiza_Memoria_Principal(MemoriaPrincipal mp) {
         for(String key : linhas.keySet()){ // Para cada key, de cada linha do bloco retirado da cache por conta do LRU

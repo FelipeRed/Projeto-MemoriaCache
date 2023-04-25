@@ -37,6 +37,8 @@ public class Exercicio6 {
         printarExecucao("LOAD r0 0001", r0, r1, r2, r3);
         r1 = cache.load("0100", memoriaPrincipal, 0);
         printarExecucao("LOAD r1 0100", r0, r1, r2, r3);
+        cache.sw(r1, "0001", memoriaPrincipal);
+        printarExecucao("SW r1 0001", r0, r1, r2, r3);
         
 
 

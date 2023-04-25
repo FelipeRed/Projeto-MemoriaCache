@@ -62,23 +62,24 @@ public class CacheConjunto {
         }
 
         boolean encontrado = false;
-        Bloco b = null;
+        Bloco b = null; //caso o alvo seja encontrado essa variável receberá o bloco alvo
         int result = 0; //receberá o dado na posição de memória alvo
-        for (Bloco bloco : conjunto) {
-            for (String key : bloco.getLinhas().keySet()) {
-                if (key.equals(alvo)) { //caso encontre o alvo
+        for (int i = 0; i < conjunto.size(); i++) {
+            Bloco bloco = conjunto.poll(); //captura o primeiro bloco da fila
+            for (String key : bloco.getLinhas().keySet()) { //captura os endereços desse bloco
+                if (key.equals(alvo)) { //verifica se o endereço capturado é igual ao do alvo
                     encontrado = true;
                     result = bloco.getLinhas().get(alvo);
                     b = bloco;
                     break;
                 }
             }
-            if (!encontrado) { //caso não tenha encontrado o alvo, adicionar o bloco a fila para não alterar a ordem
-                conjunto.add(b);
+            if (!encontrado) { //se não encontrou o alvo, adicionamos o bloco novamente a fila para não alterar a ordem
+                conjunto.add(bloco);
             }
             encontrado = false;
         }
-        if (!(b == null)) { //se o alvo for encontrado -> adicione o bloco ao final da fila
+        if (!(b == null)) { //se o alvo for encontrado, adicionamos o bloco somente agora (ao final da fila)
             conjunto.add(b);
             if (x == 0) { //serve para controlar a incrementação de hits por conta da recursividade
                 hits++;
@@ -87,7 +88,7 @@ public class CacheConjunto {
         } else { //se não, chame addBlocoCache(alvo) para colocar o bloco alvo no final da fila
             misses++;
             add_Bloco_Na_Cache(alvo, mp);
-            result = load(alvo, mp, 1); //quando chamarmos a própria função novamente o alvo será encontrado com certeza
+            result = load(alvo, mp, 1); //chamamos a própria função novamente e o alvo será encontrado com certeza
         }
         return result;
     }
@@ -103,6 +104,7 @@ public class CacheConjunto {
             3-
         */
         if (alvo.charAt(2) == '0') {
+            int quantidade_blocos = 2;
             Queue<Bloco> conjunto = cache.get(0);
             for(Bloco bloco : conjunto){
                 for(String endereco_chave_de_linha : bloco.getLinhas().keySet()){
@@ -110,11 +112,24 @@ public class CacheConjunto {
                         bloco.alterar_Valor_Bloco(alvo, valor);
                     }
                 }
+                quantidade_blocos -= 1;
+                if (quantidade_blocos == 0){
+                    add_Bloco_Na_Cache(alvo, mp);
+                }
             }
         } else {
+            int quantidade_blocos = 2;
             Queue<Bloco> conjunto = cache.get(1);
             for(Bloco bloco : conjunto){
-
+                for(String endereco_chave_de_linha : bloco.getLinhas().keySet()){
+                    if(endereco_chave_de_linha == alvo){
+                        bloco.alterar_Valor_Bloco(alvo, valor);
+                    }
+                }
+                quantidade_blocos -= 1;
+                if (quantidade_blocos == 0){
+                    add_Bloco_Na_Cache(alvo, mp);
+                }
             }
         }
     }
