@@ -22,9 +22,9 @@ public class Bloco {
         linhas = new TreeMap<>();
         linhas.put("vazio", -1);
         linhas.put("vazio ", -1);
-        dirty_bit = 0;
+        this.dirty_bit = 0;
     }
-    public Bloco(String ender_alvo, MemoriaPrincipal mp) {
+    public Bloco(String ender_alvo, MemoriaPrincipal mp, boolean alterado) {
         /*
           1- Este método recebrá em seu parâmetro qual o endereço de memória que se deseja trazer para a cache
           2- Irá varrer a memória principal buscando as duas linhas que tenham os três primeiros bits iguais
@@ -41,7 +41,11 @@ public class Bloco {
                 linhas.put(linha.getEndereco(), linha.getDado());
             }
         }
-        dirty_bit = 0;
+        if (alterado == true){ // Caso o bloco tenha sido alterado pelo comando sw, o dirty bit se tornará (1).
+            setDirty_bit(1);
+        } else {
+            setDirty_bit(0);
+        }
     }
     public TreeMap<String, Integer> getLinhas() {
         return linhas;
@@ -52,9 +56,9 @@ public class Bloco {
         for (String key : linhas.keySet()) {
             if (i == 0) { // Primeira linha do bloco
                 if (key.equals("vazio")) { // Caso o bloco esteja vazio
-                    System.out.println("    " + dirty_bit + "    |  " + key + "  |  " + linhas.get(key) + "    |");
+                    System.out.println("    " + getDirty_bit() + "    |  " + key + "  |  " + linhas.get(key) + "    |");
                 } else {
-                    System.out.println("    " + dirty_bit + "    |  " + key + "   |  " + linhas.get(key) + "   |");
+                    System.out.println("    " + getDirty_bit() + "    |  " + key + "   |  " + linhas.get(key) + "   |");
                 }
             } else { // Segunda linha do bloco
                 if (key.equals("vazio ")) { // caso o bloco
@@ -68,7 +72,7 @@ public class Bloco {
     }
     public void alterar_Valor_Bloco(String endereco, int valor) {
         linhas.put(endereco, valor);
-        this.dirty_bit = 1;
+        setDirty_bit(1);
     }
     public void atualiza_Memoria_Principal(MemoriaPrincipal mp) {
         for(String key : linhas.keySet()){ // Para cada key, de cada linha do bloco retirado da cache por conta do LRU
@@ -81,5 +85,9 @@ public class Bloco {
     }
     public int getDirty_bit() {
         return dirty_bit;
+    }
+
+    private void setDirty_bit(int valor) {
+        this.dirty_bit = valor;
     }
 }

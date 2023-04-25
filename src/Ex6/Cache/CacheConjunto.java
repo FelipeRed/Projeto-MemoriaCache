@@ -42,11 +42,17 @@ public class CacheConjunto {
 
         Bloco b_retirado = conjunto.poll(); // Retira o bloco com LRU da cache
         if(b_retirado.getDirty_bit() == 1){ // Verificação do dirtybit relacionado ao bloco retirado.
+            System.out.println("Colocando o bloco que tem dirtybit 1 na memória principal");
             b_retirado.atualiza_Memoria_Principal(mp);
+            Bloco bloco = new Bloco(alvo, mp, true);
+            conjunto.add(bloco); //passo 3
+        } else{
+            Bloco bloco = new Bloco(alvo, mp, false);
+            conjunto.add(bloco); //passo 3
         }
 
-        Bloco bloco = new Bloco(alvo, mp); //passo 2
-        conjunto.add(bloco); //passo 3
+        // Bloco bloco = new Bloco(alvo, mp, true); //passo 2 // AQUI É ONDE O BLOCO PERDE O DIRTY BIT, pois o valor do novo dirty bit não é passado para a cópia com o novo valor!! (acho)
+        // conjunto.add(bloco); //passo 3
     }
     public int load(String alvo, MemoriaPrincipal mp, int x) {
         /*  ALGORITMO
