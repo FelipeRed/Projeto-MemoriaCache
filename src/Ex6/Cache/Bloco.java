@@ -14,14 +14,14 @@ import java.util.TreeMap;
 */
 
 public class Bloco {
-    private TreeMap<String, Integer> bloco;
+    private TreeMap<String, Integer> linhas;
     private int dirty_bit; //atributo que irá dizer se foi modificado algum valor dentro do bloco ou não
 
     public Bloco() { //cria um bloco padrão com valores nulos
         //este construtor é usado na hora de criar a memória cache, pois ela inicialmente é vazia
-        bloco = new TreeMap<>();
-        bloco.put("-", -1);
-        bloco.put("- ", -1);
+        linhas = new TreeMap<>();
+        linhas.put("vazio", -1);
+        linhas.put("vazio ", -1);
         dirty_bit = 0;
     }
     public Bloco(String ender_alvo, MemoriaPrincipal mp) {
@@ -32,46 +32,52 @@ public class Bloco {
           3- Então irá alocá-las dentro do atributo bloco atráves do bloco.put(endereco, dado)
           4- Substring(0,3) captura os 3 primeiros caracteres da String
         */
-        bloco = new TreeMap<>();
+        linhas = new TreeMap<>();
         ArrayList<LinhaDeMemoria> memoriaPrincipal = mp.getMemoriaPrincipal();
         ender_alvo = ender_alvo.substring(0,3);
         for (LinhaDeMemoria linha : memoriaPrincipal) {
             String primeiros3Bits = linha.getEndereco().substring(0, 3);
             if (ender_alvo.equals(primeiros3Bits)) {
-                bloco.put(linha.getEndereco(), linha.getDado());
+                linhas.put(linha.getEndereco(), linha.getDado());
             }
         }
         dirty_bit = 0;
     }
-    public TreeMap<String, Integer> getBloco() {
-        return bloco;
+    public TreeMap<String, Integer> getLinhas() {
+        return linhas;
     }
     public void print() { //função para imprimir o bloco da memória cache
-        int i = 0;
-        for (String key : bloco.keySet()) {
-            if (i == 0) {
-                if (key.equals("-")) {
-                    System.out.println("    " + dirty_bit + "    |    " + key + "    |  " + bloco.get(key) + "    |");
+        int i = 0; //indicará a linha do bloco a ser impressa
+        int controle = 0;
+        for (String key : linhas.keySet()) {
+            if (i == 0) { // Primeira linha do bloco
+                if (key.equals("vazio")) { // Caso o bloco esteja vazio
+                    System.out.println("    " + dirty_bit + "    |  " + key + "  |  " + linhas.get(key) + "    |");
                 } else {
-                    System.out.println("    " + dirty_bit + "    |  " + key + "   |  " + bloco.get(key) + "   |");
+                    System.out.println("    " + dirty_bit + "    |  " + key + "   |  " + linhas.get(key) + "   |");
                 }
-            } else {
-                if (key.equals("- ")) {
-                    System.out.println("|                 |    " + dirty_bit + "    |    " + key + "   |  " + bloco.get(key) + "    |");
+            } else { // Segunda linha do bloco
+                if (key.equals("vazio ")) { // caso o bloco
+                    System.out.println("|       |         |         |  " + key + " |  " + linhas.get(key) + "    |");
                 } else {
-                    System.out.println("|                 |    " + dirty_bit + "    |  " + key + "   |  " + bloco.get(key) + "   |");
+                    System.out.println("|       |         |         |  " + key + "   |  " + linhas.get(key) + "   |");
                 }
             }
             i++;
         }
     }
     public void alterar_Valor_Bloco(String endereco, int valor) {
-        bloco.put(endereco, valor);
+        linhas.put(endereco, valor);
         dirty_bit = 1;
     }
     public void atualiza_Memoria_Principal(MemoriaPrincipal mp) {
-        //código que irá atualizar os dados na mémória principal caso o bloco seja removido da cache
-        //e seu dirty bit seja = 1
+        for(String key : linhas.keySet()){ // Para cada key, de cada linha do bloco retirado da cache por conta do LRU
+            for(LinhaDeMemoria endereco : mp.getMemoriaPrincipal()){ // Irá comparar com cada endereco de cada linha da memória principal
+                if( (key == endereco.getEndereco()) && (linhas.get(key) != endereco.getDado()) ){ // Se a key da linha do bloco retirado for igual a um endereço de uma linha de memória, é realizada também a verificação se os dois possuem o mesmo dado
+                    endereco.setDado(linhas.get(key)); // Caso tenham dados diferentes, o dado na memória principal é alterado pelo dado armazenado na linha correspondente do bloco retirado
+                }
+            }
+        }
     }
     public int getDirty_bit() {
         return dirty_bit;

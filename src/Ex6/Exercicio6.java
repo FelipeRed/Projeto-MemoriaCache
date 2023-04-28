@@ -9,13 +9,14 @@ public class Exercicio6 {
     private static MemoriaPrincipal memoriaPrincipal;
     private static CacheConjunto cache;
     public static void main(String[] args) {
-        int n_blocos = escolherN_Blocos();
+        //int n_blocos = escolherN_Blocos();
+        int n_blocos = 2;
         //int metodo_substituicao = escolherMetodo_Substituicao();
         memoriaPrincipal = new MemoriaPrincipal();
         cache = new CacheConjunto(n_blocos);
 
         /* TESTE A SER APLICADO
-            LOAD r0 0001
+            LOAD r0 0001 // ver se o endereço da instrução corresponde a key utilizada no bloco, para assim modificar pelo valor guardado do registrador e definir como "1" o valor do dirty bit daquele bloco alterado.
             LOAD r2 1001
               SW r2 0001
               SW r2 1101
@@ -32,25 +33,34 @@ public class Exercicio6 {
         int r3 = -1;
 
         limparTela();
-        printarExecucao("ESTADO INICIAL", r0, r1, r2, r3);
         r0 = cache.load("0001", memoriaPrincipal, 0);
         printarExecucao("LOAD r0 0001", r0, r1, r2, r3);
-        r2 = cache.load("1001", memoriaPrincipal, 0);
-        printarExecucao("LOAD r2 1001", r0, r1, r2, r3);
-        //sw(r2, "0001");
-        //printarExecucao("SW r2 0001", r0, r1, r2, r3);
-        //sw(r2, "1101");
-        //printarExecucao("SW r2 1101", r0, r1, r2, r3);
-        r0 = cache.load("1100", memoriaPrincipal, 0);
-        printarExecucao("LOAD r0 1100", r0, r1, r2, r3);
-        r1 = cache.load("0010", memoriaPrincipal, 0);
-        printarExecucao("LOAD r1 0010", r0, r1, r2, r3);
-        //sw(r0, "0011");
-        //printarExecucao("SW r0 0011", r0, r1, r2, r3);
-        r2 = cache.load("0001", memoriaPrincipal, 0);
-        printarExecucao("LOAD r2 0001", r0, r1, r2, r3);
-        r3 = cache.load("1010", memoriaPrincipal, 0);
-        printarExecucao("LOAD r3 1010", r0, r1, r2, r3);
+        r1 = cache.load("0100", memoriaPrincipal, 0);
+        printarExecucao("LOAD r1 0100", r0, r1, r2, r3);
+        
+
+
+
+
+//        printarExecucao("ESTADO INICIAL", r0, r1, r2, r3);
+//        r0 = cache.load("0001", memoriaPrincipal, 0);
+//        printarExecucao("LOAD r0 0001", r0, r1, r2, r3);
+//        r2 = cache.load("1001", memoriaPrincipal, 0);
+//        printarExecucao("LOAD r2 1001", r0, r1, r2, r3);
+//        //sw(r2, "0001");
+//        //printarExecucao("SW r2 0001", r0, r1, r2, r3);
+//        //sw(r2, "1101");
+//        //printarExecucao("SW r2 1101", r0, r1, r2, r3);
+//        r0 = cache.load("1100", memoriaPrincipal, 0);
+//        printarExecucao("LOAD r0 1100", r0, r1, r2, r3);
+//        r1 = cache.load("0010", memoriaPrincipal, 0);
+//        printarExecucao("LOAD r1 0010", r0, r1, r2, r3);
+//        //sw(r0, "0011");
+//        //printarExecucao("SW r0 0011", r0, r1, r2, r3);
+//        r2 = cache.load("0001", memoriaPrincipal, 0);
+//        printarExecucao("LOAD r2 0001", r0, r1, r2, r3);
+//        r3 = cache.load("1010", memoriaPrincipal, 0);
+//        printarExecucao("LOAD r3 1010", r0, r1, r2, r3);
 
         System.out.println("\nHits  : " + cache.getHits());
         System.out.println("Misses: " + cache.getMisses());
