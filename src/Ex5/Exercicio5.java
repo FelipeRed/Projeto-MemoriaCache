@@ -8,17 +8,27 @@ public class Exercicio5 {
         int[] exemplo1 = {0, 1, 2, 3, 1, 4, 5, 6};
         int[] exemplo2 = {0, 1, 2, 2, 22 , 32, 42, 20, 1, 10, 11, 12, 13};
         int[] exemplo3 = {1, 6, 1, 11, 1, 16, 1, 21, 1, 26};
-        int escolha = escolherExemplo(); //pede pro usuário escolher qual exemplo executar
-        switch (escolha) {
-            case 1:
-                exec(exemplo1);
-                break;
-            case 2:
-                exec(exemplo2);
-                break;
-            case 3:
-                exec(exemplo3);
-                break;
+        int[] exemplo4 = {7, 12, 17, 22, 27, 32};
+        int escolha = 0;
+        while (escolha < 1 || escolha > 4) {
+            escolha = escolherExemplo(); //pede pro usuário escolher qual exemplo executar
+            switch (escolha) {
+                case 1:
+                    exec(exemplo1);
+                    break;
+                case 2:
+                    exec(exemplo2);
+                    break;
+                case 3:
+                    exec(exemplo3);
+                    break;
+                case 4:
+                    exec(exemplo4);
+                    break;
+                default:
+                    System.out.println("\n\nFavor selecione uma opção válida (de 1 a 4).");
+                    break;
+            }
         }
     }
 
@@ -52,7 +62,8 @@ public class Exercicio5 {
         System.out.println("""
                 1- [0, 1, 2, 3, 1, 4, 5, 6]
                 2- [0, 1, 2, 2, 22 , 32, 42, 20, 1, 10, 11, 12, 13]
-                3- [1, 6, 1, 11, 1, 16, 1, 21, 1, 26]""");
+                3- [1, 6, 1, 11, 1, 16, 1, 21, 1, 26]
+                4- [7, 12, 17, 22, 27, 32]""");
         System.out.print("Qual sequencia de passos gostaria de realizar: ");
         return teclado.nextInt();
     }
